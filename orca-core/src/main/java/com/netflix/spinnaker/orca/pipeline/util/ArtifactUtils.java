@@ -257,7 +257,8 @@ public class ArtifactUtils {
         // triggered
         //
         // reference: https://github.com/spinnaker/orca/pull/4322
-        .filter(it -> trigger.getOrDefault("type", "").equals(it.get("type")))
+        .filter(it -> trigger.getOrDefault("type", "").equals(it.getOrDefault("type", "")))
+        .filter(it -> trigger.getOrDefault("source", "").equals(it.getOrDefault("source", "")))
         .map(this::getExpectedArtifactIdsFromMap)
         .forEach(expectedArtifactIdsListConcat::addAll);
 

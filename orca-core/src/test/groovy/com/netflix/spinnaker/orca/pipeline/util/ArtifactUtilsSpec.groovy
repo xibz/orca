@@ -544,6 +544,14 @@ class ArtifactUtilsSpec extends Specification {
         .matchArtifact(matchArtifact)
         .build()
 
+    def expectedArtifact3 = ExpectedArtifact.builder()
+        .usePriorArtifact(false)
+        .useDefaultArtifact(false)
+        .id("my-id-2")
+        .defaultArtifact(defaultArtifact)
+        .matchArtifact(matchArtifact)
+        .build()
+
     def pipeline = [
         "id": "abc",
         "stages": [
@@ -555,7 +563,8 @@ class ArtifactUtilsSpec extends Specification {
             }
         ],
         expectedArtifacts: [
-          expectedArtifact
+          expectedArtifact,
+          expectedArtifact3
         ],
         trigger: [
             artifacts: [
@@ -565,6 +574,7 @@ class ArtifactUtilsSpec extends Specification {
                 .reference(matchArtifact.getReference())
                 .build()
             ],
+            source: "some-source",
             type: "some-type"
         ],
         triggers: [
@@ -573,6 +583,7 @@ class ArtifactUtilsSpec extends Specification {
                 expectedArtifactIds: [
                     expectedArtifact.getId()
                 ],
+                "source": "some-source",
                 type: "some-type"
             ],
             [
@@ -580,7 +591,16 @@ class ArtifactUtilsSpec extends Specification {
                 expectedArtifactIds: [
                     expectedArtifact2.getId()
                 ],
+                "source": "some-other-source",
                 type: "some-other-type"
+            ],
+            [
+                enabled: true,
+                expectedArtifactIds: [
+                    expectedArtifact3.getId()
+                ],
+                "source": "some-other-other-source",
+                type: "some-type"
             ]
         ]
     ]
